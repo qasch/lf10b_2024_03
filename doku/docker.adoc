@@ -1,0 +1,10 @@
+= Docker 
+
+== Architektur
+
+== Grundlegende Kommandos
+
+- `docker run <aimge>` baut einen Container aus dem Image `<image>` und startet diesen, ist das Image lokal nicht vorhanden, wird es vom Docker Hub heruntergeladen
+- `docker pull <image>` lädt `<image>` vom Docker Hub herunter
+- `docker run -it <image> /bin/bash` baut einen Container und startet diesen im interaktiven Modus und führt das Kommando `/bin/bash/` aus
+- `docker exec -it <container-id/-name>  /bin/bash` startet den existierenden Container und startet diesen im interaktiven Modus und führt das Kommando `/bin/bash/` aus
