@@ -73,18 +73,28 @@ Dadurch benötigen Container extrem wenig Resourcen, sind sehr schnell erstellt 
 - `docker run <image>` baut einen Container aus dem Image `<image>` und startet diesen, ist das Image lokal nicht vorhanden, wird es vom Docker Hub heruntergeladen
 - `docker pull <image>` lädt `<image>` vom Docker Hub herunter
 - `docker run -it <image> /bin/bash` baut einen Container und startet diesen im interaktiven Modus und führt das Kommando `/bin/bash/` aus
---- TODO ---
-- `docker start `
-- `docker stop `
-- `docker rm`
-- `docker logs`
-- `docker logs -f`
-- `docker image ls`
-- --- TODO ---
+- `docker start <container>` Container starten
+- `docker stop <container>` Container stoppen
+- `docker rm <container>` gestoppten Container entfernen
+- `docker logs <container>` Logs des Containers anzeigen
+- `docker logs -f <container>` Logs des Containers fortlaufend anzeigen
+- `docker image ls` heruntergeladene Images anzeigen 
+- `docker run --rm <container> Container automatisch löschen, wenn er beendet wurde
 - `docker exec -it <container-id/-name>  /bin/bash` startet den existierenden Container und startet diesen im interaktiven Modus und führt das Kommando `/bin/bash/` aus
 - `docker top <container-id/-name>` zeigt alle momentan laufenden Prozesse im Container an
 
-- `docker run -p `
-- `docker run -d `
+== Ports
+
+Um Zugriff auf einen Container bzw. den Port eines Containers zu erlangen, verbinden wir einen Port des Containers mit einem Port des Host Systems.
+
+- `docker run -p <port-docker-host>:<port-docker-container> <image>` 
+- `docker run -p 8888:80 httpd` Port 8888 des Hosts mit dem Port 80 des Containers verbinden
+
+== Volumes 
+
+Mit Volumes bzw. in diesem Fall sog. _Named Volumes_ können Dateien persistent gespeichert werden und so auch einem neu gebauten Container zur Verfügung gestellt werden.
+
+- `docker run -v <verzeichnis-auf-dem-host>:<verzeichnis-im-container`
+- `docker run -v ./htdocs:/usr/local/apache2/htdocs` das Verzeichnis `htdocs` auf dem Host wird mit dem Verzeichnis `usr/local/apache2/htdocs` im Container verbunden. Änderungen werden in beide Richtungen übertragen
 
 
