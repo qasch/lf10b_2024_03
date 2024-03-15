@@ -29,6 +29,9 @@
       copy:
         src: files/sshd_config
         dest: /etc/ssh/sshd_config
+        mode: '0644'
+        owner: root
+        group: root
       become: true
 
     - name: Restart SSH Server to apply new configuration
