@@ -1,0 +1,52 @@
+---
+
+- hosts: server
+
+  tasks:
+
+    - name: Copy README file
+      copy:
+        src: files/README.md
+        dest: /home/tux
+
+    - name: Ensure sudo is installed
+      package:
+        name: 
+          - sudo
+        state: present
+      become: true
+
+    - name: Install basic packages
+      package:
+        name: 
+          - htop
+          - ncdu
+          - neovim
+        state: latest
+      become: true
+
+    - name: Configure SSH Server
+      copy:
+        src: files/sshd_config
+        dest: /etc/ssh/sshd_config
+      become: true
+
+    - name: Restart SSH Server to apply new configuration
+      command: systemctl restart sshd.service
+      become: true
+
+    - name: Create test-dir for test-file
+      file: 
+        path: /home/tux/test-dir
+        state: directory
+        mode: '0755'
+        owner: tux
+        group: tux
+
+    - name: Create test-file on target system
+      command: touch test-file
+      args:
+        chdir: /home/tux/test-dir
+
+
+
