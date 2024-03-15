@@ -1,13 +1,18 @@
 ---
 
 - hosts: server
+  # Variablen, die für dieses Playbook gelten
+  vars:
+    - user: tux
+    - homedir: "/home/{{ user }}"
 
   tasks:
 
     - name: Copy README file
       copy:
         src: files/README.md
-        dest: /home/tux
+        # Variablen müssen IMMER in Anführungszeichen gesetzt werden
+        dest: "{{ homedir }}"
 
     - name: Ensure sudo is installed
       package:
@@ -40,7 +45,7 @@
 
     - name: Create test-dir for test-file
       file: 
-        path: /home/tux/test-dir
+        path: "{{ homedir }}/test-dir"
         state: directory
         mode: '0755'
         owner: tux
@@ -49,7 +54,6 @@
     - name: Create test-file on target system
       command: touch test-file
       args:
-        chdir: /home/tux/test-dir
+        chdir: "{{ homedir }}/test-dir"
 
 
-        # Eine Änderung an der Datei
