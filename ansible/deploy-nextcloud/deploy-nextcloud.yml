@@ -1,18 +1,42 @@
 ---
 
-# Schritte, um Nextcloud mittels docker auf den Clients zu betreiben
-#
-# - (sudo muss vorhanden sein -> ist bei uns schon der Fall)
-# - docker muss installiert sein
-# - docker compose muss installiert sein
-#   - entweder nach folgender Anleitung: https://docs.docker.com/engine/install/debian/#install-using-the-repository
-#   - oder aus den Standard Paketquellen:
-#     - docker
-#     - docker.io
-#     - containerd
-#     - runc
-#     - docker-compose
-# - docker daemon muss laufen
-# - Ordnerstruktur muss vorhanden sein
-# - docker-compose.yml kopieren
-# - Kommando "docker compose up -d" ausführen (im richtigen Verzeichnis)
+- hosts: server
+  # Alle Tasks des Playbooks als root ausführen
+  become: true
+  vars:
+    - nextcloud_dir: /srv/docker/nextcloud
+    - server_ip: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+
+  tasks:
+
+    - name: Install docker and docker compose
+      package:
+        name:
+          - docker
+          - containerd
+          - runc
+          - docker-compose
+        state: present
+        
+    - name: Ensure docker daemon is running
+      command: systemctl start docker.service
+
+    - name: Create target directories
+      file:
+        path: "{{ nextcloud_dir }}"
+        state: directory
+
+    - name: Configure SSH Server
+      template:
+        src: templates/docker-compose.yml.j2
+        dest: "{{ nextcloud_dir }}/docker-compose.yml"
+        mode: '0644'
+        owner: root
+        group: root
+      become: true
+
+    - name: Start containers
+      command: "docker-compose up -d"
+      args:
+        chdir: "{{ nextcloud_dir }}"              
+
