@@ -2,6 +2,7 @@
 
 # Schritte, um Nextcloud mittels docker auf den Clients zu betreiben
 #
+# - (sudo muss vorhanden sein -> ist bei uns schon der Fall)
 # - docker muss installiert sein
 # - docker compose muss installiert sein
 #   - entweder nach folgender Anleitung: https://docs.docker.com/engine/install/debian/#install-using-the-repository
